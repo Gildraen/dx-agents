@@ -2,7 +2,7 @@
 
 `Gildraen/dx-agents` is the canonical producer of shared, client-neutral
 instructions, agents and skills for Gildraen repositories. Resources are
-consumed from a local Git checkout at a pinned revision. The repository does
+consumed from a local Git checkout at a fixed version tag. The repository does
 not install tools or require the DX Dev Container Feature.
 
 ## Resources
@@ -22,16 +22,17 @@ them. The `dx-*` role names and relative links are stable within the checkout.
 
 ## Git consumption
 
-From the consumer repository root, select a full commit SHA published in
-`Gildraen/dx-agents` and record it in the consumer's configuration:
+The candidate consumption version is `v0.1.0-rc.1`, a prerelease, not a stable
+release. From the consumer repository root, select that version tag:
 
 ```sh
-revision='<full-commit-sha>'
-git clone --no-checkout https://github.com/Gildraen/dx-agents.git .devcontainer/dx-agents
-git -C .devcontainer/dx-agents checkout --detach "$revision"
+git clone --branch v0.1.0-rc.1 --depth 1 https://github.com/Gildraen/dx-agents.git .devcontainer/dx-agents
 export DX_AGENTS_HOME="$(pwd)/.devcontainer/dx-agents"
 git -C "$DX_AGENTS_HOME" rev-parse HEAD
 ```
+
+Cloning a tag checks out its commit in detached HEAD state. `rev-parse HEAD`
+shows the resolved commit; the consumption reference remains the version tag.
 
 `DX_AGENTS_HOME` is the absolute path to the checkout root containing
 `AGENTS.md`, `instructions/`, `agents/` and `skills/`. Make it available in the
