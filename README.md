@@ -2,7 +2,7 @@
 
 `Gildraen/dx-agents` is the canonical producer of shared, client-neutral
 instructions, agents and skills for Gildraen repositories. Resources are
-consumed from a local Git checkout at a fixed version tag. The repository does
+consumed from a local Git checkout at a fixed commit SHA, tracked by a SemVer tag. The repository does
 not install tools or require the DX Dev Container Feature.
 
 ## Resources
@@ -22,17 +22,19 @@ them. The `dx-*` role names and relative links are stable within the checkout.
 
 ## Git consumption
 
-The candidate consumption version is `v0.1.0-rc.1`, a prerelease, not a stable
-release. From the consumer repository root, select that version tag:
+The candidate tag is `v0.1.0-rc.1`, a prerelease, not a stable release; it
+resolves to commit `a448037a8b96b2269ac1b46f0ff2018738083c1e`. From the consumer
+repository root, check out that immutable commit:
 
 ```sh
-git clone --branch v0.1.0-rc.1 --depth 1 https://github.com/Gildraen/dx-agents.git .devcontainer/dx-agents
+git init .devcontainer/dx-agents
+git -C .devcontainer/dx-agents remote add origin https://github.com/Gildraen/dx-agents.git
+git -C .devcontainer/dx-agents fetch --depth=1 origin a448037a8b96b2269ac1b46f0ff2018738083c1e
+git -C .devcontainer/dx-agents checkout --detach FETCH_HEAD
 export DX_AGENTS_HOME="$(pwd)/.devcontainer/dx-agents"
-git -C "$DX_AGENTS_HOME" rev-parse HEAD
 ```
 
-Cloning a tag checks out its commit in detached HEAD state. `rev-parse HEAD`
-shows the resolved commit; the consumption reference remains the version tag.
+Renovate tracks the tag and updates the pinned SHA as one reference.
 
 `DX_AGENTS_HOME` is the absolute path to the checkout root containing
 `AGENTS.md`, `instructions/`, `agents/` and `skills/`. Make it available in the
