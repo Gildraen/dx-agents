@@ -1,0 +1,20 @@
+version: '3'
+
+tasks:
+  default:
+    desc: Show available tasks.
+    cmds:
+      - task --list
+
+  validate:
+    desc: Check shell syntax and Taskfile integrity.
+    cmds:
+      - bash -n tests/test-resource-discovery.sh
+      - bash -n tests/test-runtime-hierarchy.sh
+      - task --taskfile Taskfile.yml --list >/dev/null
+
+  test:
+    desc: Check shared resource discovery and instruction hierarchy.
+    cmds:
+      - bash tests/test-resource-discovery.sh
+      - bash tests/test-runtime-hierarchy.sh
