@@ -22,25 +22,27 @@ them. The `dx-*` role names and relative links are stable within the checkout.
 
 ## Git consumption
 
-The candidate tag is `v0.1.0-rc.1`, a prerelease, not a stable release; it
-resolves to commit `a448037a8b96b2269ac1b46f0ff2018738083c1e`. From the consumer
-repository root, check out that immutable commit:
+The current tag is `v0.0.0`, which resolves to commit
+`a448037a8b96b2269ac1b46f0ff2018738083c1e`. Add it to the consumer repository
+as a submodule at the shared component path:
 
 ```sh
-git init .devcontainer/dx-agents
-git -C .devcontainer/dx-agents remote add origin https://github.com/Gildraen/dx-agents.git
-git -C .devcontainer/dx-agents fetch --depth=1 origin a448037a8b96b2269ac1b46f0ff2018738083c1e
-git -C .devcontainer/dx-agents checkout --detach FETCH_HEAD
-export DX_AGENTS_HOME="$(pwd)/.devcontainer/dx-agents"
+git submodule add https://github.com/Gildraen/dx-agents.git .devcontainer/components/agents
+git -C .devcontainer/components/agents fetch --depth=1 origin refs/tags/v0.0.0
+git -C .devcontainer/components/agents checkout --detach FETCH_HEAD
+git submodule set-branch --branch v0.0.0 -- .devcontainer/components/agents
+git add .gitmodules .devcontainer/components/agents
 ```
 
-Renovate tracks the tag and updates the pinned SHA as one reference.
+The submodule gitlink records the exact commit SHA. The `branch` value in
+`.gitmodules` is the SemVer tag Renovate tracks; Renovate updates the tag and
+gitlink together. Do not move or replace a published tag.
 
 `DX_AGENTS_HOME` is the absolute path to the checkout root containing
 `AGENTS.md`, `instructions/`, `agents/` and `skills/`. Make it available in the
 agent process environment; an interactive shell export only affects that
 shell and its child processes. In a Dev Container, the consumer can set
-`remoteEnv.DX_AGENTS_HOME` to `${containerWorkspaceFolder}/.devcontainer/dx-agents`.
+`remoteEnv.DX_AGENTS_HOME` to `${containerWorkspaceFolder}/.devcontainer/components/agents`.
 The checkout must already be present when the agent starts.
 
 The consumer's root `AGENTS.md` explicitly loads the shared bootstrap before
@@ -67,11 +69,11 @@ paths to the checkout:
 {
   "chat.agentFilesLocations": {
     ".agents/agents": true,
-    ".devcontainer/dx-agents/agents": true
+    ".devcontainer/components/agents/agents": true
   },
   "chat.agentSkillsLocations": {
     ".agents/skills": true,
-    ".devcontainer/dx-agents/skills": true
+    ".devcontainer/components/agents/skills": true
   }
 }
 ```
