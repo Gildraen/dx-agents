@@ -5,9 +5,6 @@
     "ghcr.io/gildraen/dx/dx:1.2.0": {}
   },
   "remoteUser": "vscode",
-  "remoteEnv": {
-    "DX_AGENTS_HOME": "${containerWorkspaceFolder}"
-  },
   "customizations": {
     "vscode": {
       "settings": {
