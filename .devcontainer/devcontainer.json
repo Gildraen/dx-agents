@@ -1,0 +1,11 @@
+{
+  "name": "dx-agents",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+  "features": {
+    "ghcr.io/devcontainers/features/node:2": {
+      "version": "24"
+    },
+    "ghcr.io/devcontainers-extra/features/go-task:1": {}
+  },
+  "remoteUser": "vscode"
+}
