@@ -1,0 +1,9 @@
+{
+  "features": {
+    "ghcr.io/gildraen/dx/dx:1.2.0": {
+      "version": "1.2.0",
+      "resolved": "ghcr.io/gildraen/dx/dx@sha256:340db147f92b68e356e7462a3a9a8d98610826b7f79b5c980e9be6228200669b",
+      "integrity": "sha256:340db147f92b68e356e7462a3a9a8d98610826b7f79b5c980e9be6228200669b"
+    }
+  }
+}
