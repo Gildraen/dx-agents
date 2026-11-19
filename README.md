@@ -2,8 +2,8 @@
 
 `Gildraen/dx-agents` is the canonical producer of shared, client-neutral
 instructions, agents and skills for Gildraen repositories. Resources are
-consumed from a local Git checkout at a fixed commit SHA, tracked by a SemVer tag. The repository does
-not install tools or require the DX Dev Container Feature.
+consumed from a local Git checkout at a fixed commit SHA, tracked by a SemVer
+tag. The repository does not install tools or require the DX Dev Container Feature.
 
 ## Resources
 
@@ -22,21 +22,24 @@ them. The `dx-*` role names and relative links are stable within the checkout.
 
 ## Git consumption
 
-The current tag is `v0.0.0`, which resolves to commit
-`a448037a8b96b2269ac1b46f0ff2018738083c1e`. Add it to the consumer repository
-as a submodule at the shared component path:
+Select a release tag and its corresponding commit SHA. Add the component to
+the consumer repository as a submodule at the shared component path:
 
 ```sh
-git submodule add https://github.com/Gildraen/dx-agents.git .devcontainer/components/agents
-git -C .devcontainer/components/agents fetch --depth=1 origin refs/tags/v0.0.0
-git -C .devcontainer/components/agents checkout --detach FETCH_HEAD
-git submodule set-branch --branch v0.0.0 -- .devcontainer/components/agents
-git add .gitmodules .devcontainer/components/agents
+version_tag='<full-semver-tag>'
+version_commit='<commit-sha>'
+git submodule add https://github.com/Gildraen/dx-agents.git .devcontainer/components/agents && \
+  git -C .devcontainer/components/agents fetch --depth=1 origin "refs/tags/$version_tag" && \
+  test "$(git -C .devcontainer/components/agents rev-parse 'FETCH_HEAD^{commit}')" = "$version_commit" && \
+  git -C .devcontainer/components/agents checkout --detach "$version_commit" && \
+  git submodule set-branch --branch "$version_tag" -- .devcontainer/components/agents && \
+  git add .gitmodules .devcontainer/components/agents
 ```
 
 The submodule gitlink records the exact commit SHA. The `branch` value in
-`.gitmodules` is the SemVer tag Renovate tracks; Renovate updates the tag and
-gitlink together. Do not move or replace a published tag.
+`.gitmodules` is the SemVer tag. With a matching Renovate configuration,
+Renovate updates the tag and gitlink together. Do not move or replace a
+published tag.
 
 `DX_AGENTS_HOME` is the absolute path to the checkout root containing
 `AGENTS.md`, `instructions/`, `agents/` and `skills/`. Make it available in the
