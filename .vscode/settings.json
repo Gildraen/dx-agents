@@ -1,0 +1,12 @@
+{
+    "chat.agentFilesLocations": {
+        "agents": true
+    },
+    "chat.agentSkillsLocations": {
+        "skills": true
+    },
+    "chat.editor.localAgent.enabled": true,
+    "chat.defaultToCopilotHarness": false,
+    "chat.editor.preferCopilotHarness": false,
+    "chat.permissions.default": "autopilot"
+}
