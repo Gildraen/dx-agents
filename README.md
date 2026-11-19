@@ -10,7 +10,9 @@ tag. The repository does not install tools or require the DX Dev Container Featu
 - [AGENTS.md](AGENTS.md) is the shared bootstrap. It loads the baseline and Git
   instructions and defines hierarchy, resource selection and delegation.
 - [instructions/base.md](instructions/base.md) and
-  [instructions/git.md](instructions/git.md) contain the cross-role rules.
+  [instructions/git.md](instructions/git.md) contain the cross-role rules;
+  `instructions/base.md` is also the canonical source for shared repository
+  conventions.
 - `agents/*.agent.md` contains roles with client-neutral `name` and
   `description` metadata.
 - `skills/*/SKILL.md` contains bounded workflows. Each skill links to its
