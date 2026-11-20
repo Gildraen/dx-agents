@@ -28,6 +28,28 @@ Use a task-specific worktree under `<main-worktree>/tmp/worktree/<task-slug>`
 for repository changes. The root `.gitignore` excludes this directory; see
 [instructions/git.md](instructions/git.md) for the creation and cleanup rules.
 
+## Portable Agent Plugin
+
+The repository root is an [Agent Plugins 1.0](https://agent-plugins.org/)
+package. Compatible clients discover the existing `skills/` directory through
+the root [plugin.json](plugin.json); the skill files remain canonical here and
+are not copied into a client-specific package. Install this Git repository as
+a plugin using the client’s plugin workflow. The package format is portable,
+but installation and marketplace setup remain client-specific; this repository
+does not yet publish a plugin catalog. Pin a full commit SHA or SemVer tag for
+reproducible installs. The plugin version is tracked separately from
+repository tags. Use `<plugin-version>` for the manifest's SemVer and
+`<repository-tag>` for a repository ref that contains the plugin.
+
+The repository's `agents/*.agent.md` also serve as an experimental Agent
+Profile draft based on [incubation #70](https://github.com/agentplugins/agent-plugins-spec/discussions/70):
+a stable `name` and persistent Markdown instructions, with an optional
+`description`. This profile convention is not part of Agent Plugins 1.0, and
+clients may ignore it. Structured `skills`, `plugins`, `model.requires` and
+`subagents` fields are not declared yet; workflow profiles are out of scope.
+Consumers needing the complete shared bootstrap and rules must still use the
+pinned submodule and `DX_AGENTS_HOME` setup below.
+
 ## Git consumption
 
 Select a release tag and its corresponding commit SHA. Add the component to
