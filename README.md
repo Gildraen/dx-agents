@@ -106,6 +106,26 @@ See the VS Code documentation for
 [custom agents](https://code.visualstudio.com/docs/agent-customization/custom-agents)
 and [Agent Skills](https://code.visualstudio.com/docs/agent-customization/agent-skills).
 
+## Releases
+
+After `validate` succeeds on a push to `main`, Release Please opens or updates
+a release PR from Conventional Commits. Merge that PR to create the GitHub
+Release and its `v<release-version>` tag. A `feat` requests a minor bump, a
+`fix` a patch bump, and a `!` breaking-change marker a major bump; commits such
+as `docs` and `chore` do not request a release.
+
+The repository release baseline is kept in `version.txt` and
+`.release-please-manifest.json`; tests require them to match. The plugin
+manifest's version remains separately managed.
+
+Release Please uses `GITHUB_TOKEN` by default. GitHub does not start workflows
+for pull requests created with that token. Configure a repository secret named
+`RELEASE_PLEASE_TOKEN` with a fine-grained token limited to this repository and
+contents, issues and pull-request write access if the generated release PRs
+must also run the `validate` workflow. Also enable
+the repository setting that allows GitHub Actions to create pull requests; this
+workflow does not approve them.
+
 ## Checks
 
 Repository checks require Bash, Node.js and Go Task v3 on `PATH`, with no npm

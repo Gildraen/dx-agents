@@ -9,7 +9,15 @@ const assert = require('node:assert/strict');
 const { execFileSync } = require('node:child_process');
 const fs = require('node:fs');
 const path = require('node:path');
-for (const file of ['.gitignore', 'AGENTS.md', 'README.md', 'Taskfile.yml']) {
+for (const file of [
+  '.gitignore',
+  '.release-please-manifest.json',
+  'AGENTS.md',
+  'README.md',
+  'release-please-config.json',
+  'Taskfile.yml',
+  'version.txt',
+]) {
   assert.ok(fs.statSync(file).isFile(), `missing required file: ${file}`);
 }
 const gitignore = fs.readFileSync('.gitignore', 'utf8').split(/\r?\n/);
@@ -20,6 +28,23 @@ const gitInstructions = fs.readFileSync('instructions/git.md', 'utf8');
 assert.match(gitInstructions, /<main-worktree>\/tmp\/worktree\/<task-slug>/);
 const contributionAgent = fs.readFileSync('agents/contribution.agent.md', 'utf8');
 assert.match(contributionAgent, /Pour les opérations de worktree, utiliser \[dx-worktree\]\(worktree\.agent\.md\)\./);
+const releaseConfig = JSON.parse(fs.readFileSync('release-please-config.json', 'utf8'));
+const releaseManifest = JSON.parse(fs.readFileSync('.release-please-manifest.json', 'utf8'));
+const releasePackage = releaseConfig.packages['.'];
+assert.equal(releaseConfig['include-component-in-tag'], false);
+assert.equal(releaseConfig['include-v-in-tag'], true);
+assert.equal(releasePackage['release-type'], 'simple');
+assert.equal(releasePackage['package-name'], 'dx-agents');
+assert.equal(releasePackage['version-file'], 'version.txt');
+assert.match(releaseManifest['.'], /^\d+\.\d+\.\d+$/);
+assert.equal(fs.readFileSync('version.txt', 'utf8').trim(), releaseManifest['.']);
+const validationWorkflow = fs.readFileSync('.github/workflows/validate.yml', 'utf8');
+const releaseJob = validationWorkflow.split('\n  release:\n')[1] ?? '';
+assert.match(releaseJob, /needs: validate/);
+assert.match(releaseJob, /github\.event_name == 'push' && github\.ref == 'refs\/heads\/main'/);
+assert.match(releaseJob, /googleapis\/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7/);
+assert.match(releaseJob, /contents: write[\s\S]*issues: write[\s\S]*pull-requests: write/);
+assert.match(releaseJob, /token: \$\{\{ secrets\.RELEASE_PLEASE_TOKEN \|\| secrets\.GITHUB_TOKEN \}\}/);
 for (const directory of ['agents', 'instructions', 'skills']) {
   assert.ok(fs.statSync(directory).isDirectory());
 }
