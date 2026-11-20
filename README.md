@@ -110,9 +110,14 @@ and [Agent Skills](https://code.visualstudio.com/docs/agent-customization/agent-
 
 After `validate` succeeds on a push to `main`, Release Please opens or updates
 a release PR from Conventional Commits. Merge that PR to create the GitHub
-Release and its `v<release-version>` tag. A `feat` requests a minor bump, a
+Release and its `<release-version>` tag, without a `v` prefix. Existing tags
+are not renamed. A `feat` requests a minor bump, a
 `fix` a patch bump, and a `!` breaking-change marker a major bump; commits such
 as `docs` and `chore` do not request a release.
+
+The initial no-prefix release is anchored at the commit currently tagged
+`v0.2.0`, so its release notes start after that baseline. Release Please ignores
+this bootstrap SHA after its first release PR is merged.
 
 The repository release baseline is kept in `version.txt` and
 `.release-please-manifest.json`; tests require them to match. The plugin

@@ -31,13 +31,15 @@ assert.match(contributionAgent, /Pour les opérations de worktree, utiliser \[dx
 const releaseConfig = JSON.parse(fs.readFileSync('release-please-config.json', 'utf8'));
 const releaseManifest = JSON.parse(fs.readFileSync('.release-please-manifest.json', 'utf8'));
 const releasePackage = releaseConfig.packages['.'];
+assert.match(releaseConfig['bootstrap-sha'], /^[0-9a-f]{40}$/);
 assert.equal(releaseConfig['include-component-in-tag'], false);
-assert.equal(releaseConfig['include-v-in-tag'], true);
+assert.equal(releaseConfig['include-v-in-tag'], false);
 assert.equal(releasePackage['release-type'], 'simple');
 assert.equal(releasePackage['package-name'], 'dx-agents');
 assert.equal(releasePackage['version-file'], 'version.txt');
 assert.match(releaseManifest['.'], /^\d+\.\d+\.\d+$/);
 assert.equal(fs.readFileSync('version.txt', 'utf8').trim(), releaseManifest['.']);
+assert.equal(releaseConfig['bootstrap-sha'], '129d5862c29ccdef662d93b41a683f1b1d0925a6');
 const validationWorkflow = fs.readFileSync('.github/workflows/validate.yml', 'utf8');
 const releaseJob = validationWorkflow.split('\n  release:\n')[1] ?? '';
 assert.match(releaseJob, /needs: validate/);
