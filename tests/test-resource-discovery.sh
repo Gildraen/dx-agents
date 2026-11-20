@@ -23,6 +23,20 @@ assert.match(contributionAgent, /Pour les opérations de worktree, utiliser \[dx
 for (const directory of ['agents', 'instructions', 'skills']) {
   assert.ok(fs.statSync(directory).isDirectory());
 }
+const plugin = JSON.parse(fs.readFileSync('plugin.json', 'utf8'));
+assert.deepEqual(Object.keys(plugin).sort(), ['$schema', 'description', 'keywords', 'name', 'repository', 'version'].sort());
+assert.equal(plugin.$schema, 'https://agent-plugins.org/schemas/1.0.0/plugin.schema.json');
+assert.equal(plugin.name, 'dx-agents');
+assert.match(plugin.name, /^[a-z0-9]+(?:-[a-z0-9]+)*$/);
+assert.equal(typeof plugin.version, 'string');
+const semverPattern = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[A-Za-z-][0-9A-Za-z-]*)(?:\.(?:0|[1-9]\d*|\d*[A-Za-z-][0-9A-Za-z-]*))*))?(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?$/;
+assert.match(plugin.version, semverPattern);
+assert.match('1.2.3-rc.1+build.7', semverPattern);
+assert.doesNotMatch('01.2.3', semverPattern);
+assert.equal(plugin.repository, 'https://github.com/Gildraen/dx-agents');
+assert.equal(typeof plugin.description, 'string');
+assert.ok(Array.isArray(plugin.keywords) && plugin.keywords.every(keyword => typeof keyword === 'string'));
+assert.ok(!Object.prototype.hasOwnProperty.call(plugin, 'extensions'), 'portable plugin must not require client-specific extensions');
 for (const directory of ['agents', 'instructions']) {
   const files = fs.readdirSync(directory);
   assert.ok(files.length > 0);
@@ -32,6 +46,11 @@ for (const directory of ['agents', 'instructions']) {
     assert.doesNotMatch(contents, /^applyTo:/m);
     const metadata = contents.match(/^---\n([\s\S]*?)\n---\n/)?.[1];
     assert.ok(metadata, `missing frontmatter: ${directory}/${file}`);
+    if (directory === 'agents') {
+      const profileName = metadata.match(/^name:\s*([a-z0-9]+(?:-[a-z0-9]+)*)\s*$/m)?.[1];
+      assert.ok(profileName && profileName.length <= 64, `invalid profile name: ${file}`);
+      assert.ok(contents.replace(/^---\n[\s\S]*?\n---\n/, '').trim(), `missing profile instructions: ${file}`);
+    }
     assert.deepEqual(metadata.split('\n').map(line => line.split(':')[0]).sort(), ['description', 'name']);
   }
 }

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "dx-agents",
+  "version": "0.1.0",
+  "description": "Shared, client-neutral engineering skills from the dx-agents project.",
+  "repository": "https://github.com/Gildraen/dx-agents",
+  "keywords": [
+    "agents",
+    "skills",
+    "developer-workflows"
+  ]
+}
