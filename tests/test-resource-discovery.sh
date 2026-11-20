@@ -6,11 +6,20 @@ cd "$repo_root"
 
 node <<'EOF'
 const assert = require('node:assert/strict');
+const { execFileSync } = require('node:child_process');
 const fs = require('node:fs');
 const path = require('node:path');
-for (const file of ['AGENTS.md', 'README.md', 'Taskfile.yml']) {
+for (const file of ['.gitignore', 'AGENTS.md', 'README.md', 'Taskfile.yml']) {
   assert.ok(fs.statSync(file).isFile(), `missing required file: ${file}`);
 }
+const gitignore = fs.readFileSync('.gitignore', 'utf8').split(/\r?\n/);
+assert.ok(gitignore.includes('/tmp/worktree/'), 'worktree directory must be ignored');
+const ignoreOutput = execFileSync('git', ['check-ignore', '--no-index', '-v', 'tmp/worktree/__ignore_probe__'], { encoding: 'utf8' });
+assert.ok(ignoreOutput.startsWith('.gitignore:'), 'Git must ignore worktree paths through the root .gitignore');
+const gitInstructions = fs.readFileSync('instructions/git.md', 'utf8');
+assert.match(gitInstructions, /<main-worktree>\/tmp\/worktree\/<task-slug>/);
+const contributionAgent = fs.readFileSync('agents/contribution.agent.md', 'utf8');
+assert.match(contributionAgent, /Pour les opérations de worktree, utiliser \[dx-worktree\]\(worktree\.agent\.md\)\./);
 for (const directory of ['agents', 'instructions', 'skills']) {
   assert.ok(fs.statSync(directory).isDirectory());
 }

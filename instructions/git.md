@@ -12,7 +12,8 @@ Definir le cadre Git minimal pour toute modification d'un repository Gildraen.
 ## Regles
 
 - Travailler sur une branche dediee, jamais directement sur `main`.
-- Pour chaque nouvelle demande impliquant des modifications, creer une worktree Git dediee sur cette branche avant toute edition. Effectuer les editions et validations dans cette worktree, pas dans le checkout principal.
+- Pour chaque nouvelle demande impliquant des modifications, creer une worktree Git dediee sur cette branche avant toute edition. La placer sous `<main-worktree>/tmp/worktree/<task-slug>`. Utiliser le premier chemin `worktree` de `git worktree list --porcelain` comme worktree principale, meme lorsque la commande est lancee depuis une worktree de tache; ne jamais construire le chemin depuis celle-ci. Effectuer les editions et validations dans la worktree de tache, pas dans la worktree principale.
+- Garder `/tmp/worktree/` dans le `.gitignore` racine et verifier le chemin cible avec `git check-ignore`. Lorsqu'un checkout principal plus ancien n'a pas encore cette règle, ajouter localement le meme motif a `.git/info/exclude` avant d'y creer une worktree imbriquee.
 - Reutiliser la worktree de la tache pour ses suites et transmettre son chemin aux sous-agents. Ne pas modifier ni supprimer les worktrees des autres taches. Une analyse en lecture seule ne necessite pas de nouvelle worktree.
 - Ne jamais commit ni push sans approbation explicite de l'utilisateur.
 - Utiliser des messages de commit conventionnels (`<type>: <description courte>`) qui decrivent la decision.
