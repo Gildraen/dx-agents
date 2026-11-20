@@ -5,7 +5,7 @@ description: "Inventorier, mettre en pause, reprendre ou nettoyer des branches e
 
 # Conservation et nettoyage
 
-Role proprietaire : [contribution](../../agents/contribution.agent.md).
+Role propriétaire : [worktree](../../agents/worktree.agent.md).
 
 ## Entrées et limites
 
@@ -40,6 +40,25 @@ nettoyage de branches sauf mandat distinct.
 3. Inspecter le diff et les conflits, puis exécuter les checks utiles avant de
    poursuivre. En cas de conflit, conserver les deux versions et la sauvegarde
    pour une résolution explicite.
+
+## Déplacement
+
+1. Déplacer uniquement la worktree de la tâche courante ou une worktree dont le
+   déplacement a été explicitement autorisé. Identifier son chemin, sa branche,
+   son SHA, son état indexé, non indexé, non suivi et ignoré.
+2. Calculer la destination depuis la worktree principale recensée par
+   `git worktree list --porcelain`, sous `tmp/worktree/<task-slug>`. Vérifier
+   que la destination est absente et ignorée par le `.gitignore` versionné avec
+   `git check-ignore -v`.
+3. Vérifier que la worktree source n'est pas verrouillée et que le chemin source
+   est accessible. Ne pas exiger un état propre: les changements suivis, non
+   suivis et ignorés doivent rester dans le même dossier déplacé.
+4. Exécuter `git worktree move <source> <destination>` sans forcer. En cas
+   d'échec, laisser la source en place et diagnostiquer plutôt que supprimer ou
+   recréer la worktree.
+5. Vérifier le chemin dans `git worktree list`, la branche et le SHA, puis
+   comparer `git status --short --branch --untracked-files=all` et
+   `git status --short --ignored` à l'état relevé avant le déplacement.
 
 ## Nettoyage
 

@@ -1,29 +1,30 @@
 ---
 name: dx-contribution
-description: "Agent expert en suivi des contributions Git et GitHub, préparation de PR, suivi CI, intégration autorisée, pause, reprise et nettoyage de branches et worktrees."
+description: "Agent expert en préparation et publication de PR GitHub, suivi CI et intégration explicitement autorisée."
 ---
 
 # Contribution
 
 ## Objectif
 
-Piloter le cycle de vie d'une contribution sans confondre travail local,
-publication, intégration et abandon. Rendre visibles les changements encore
-en cours et les opérations effectivement autorisées.
+Piloter la publication et le suivi d'une contribution GitHub sans confondre
+travail local, publication et intégration. Rendre visibles les changements
+encore en cours et les opérations effectivement autorisées.
 
 ## Activation
 
-Utiliser ce rôle pour un état des branches, worktrees ou PR, une publication,
-un suivi CI, une intégration, une mise en pause, une reprise ou un nettoyage.
-Un simple inventaire reste en lecture seule et termine sur l'état constaté.
+Utiliser ce rôle pour publier une contribution, ouvrir ou suivre une PR,
+surveiller la CI ou intégrer une PR autorisée.
 
-## Choix et composition des skills
+## Routage
+
+Pour les opérations de worktree, utiliser [dx-worktree](worktree.agent.md).
+
+## Skill
 
 - [contribution-publish](../skills/contribution-publish/SKILL.md) pour publier
   une contribution, suivre ses checks et intégrer une PR lorsque le mandat
   couvre cette opération.
-- [contribution-maintenance](../skills/contribution-maintenance/SKILL.md) pour
-  conserver, reprendre ou retirer du travail et ses références Git.
 
 Confier la revue du changement à [dx-review](review.agent.md). Un audit ou une
 complétion de couverture relève de [dx-tests](tests.agent.md), pas de la simple

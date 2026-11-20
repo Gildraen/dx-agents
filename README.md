@@ -22,6 +22,12 @@ Project-specific resources remain in the consumer's `.agents/agents/` and
 `.agents/skills/`. They are additive to the shared resources, not copies of
 them. The `dx-*` role names and relative links are stable within the checkout.
 
+## Worktrees
+
+Use a task-specific worktree under `<main-worktree>/tmp/worktree/<task-slug>`
+for repository changes. The root `.gitignore` excludes this directory; see
+[instructions/git.md](instructions/git.md) for the creation and cleanup rules.
+
 ## Git consumption
 
 Select a release tag and its corresponding commit SHA. Add the component to
