@@ -40,6 +40,11 @@ resources merely to rephrase them. Validate changes with the closest available
 check before broader validation. Report the result, checks actually run, and
 remaining limitations; do not claim unperformed validation.
 
+Before completing a behavior, configuration, workflow, command, or public
+contract change, compare the relevant documentation and examples with the
+resulting implementation. Update stale or incomplete claims, verify any edited
+links and commands, and report when no documentation change is needed.
+
 ## Load the shared rules
 
 Before working on a project, read [base.md](instructions/base.md) and
