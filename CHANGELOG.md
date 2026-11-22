@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/Gildraen/dx-agents/compare/0.3.0...0.4.0) (2026-11-22)
+
+
+### Features
+
+* add naming research agent ([#27](https://github.com/Gildraen/dx-agents/issues/27)) ([2fa7305](https://github.com/Gildraen/dx-agents/commit/2fa730590b32c458991a1a18002ea5985c7afd11))
+
 ## [0.3.0](https://github.com/Gildraen/dx-agents/compare/0.2.0...0.3.0) (2026-11-20)
 
 
