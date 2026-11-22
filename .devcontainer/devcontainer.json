@@ -2,7 +2,7 @@
   "name": "dx-agents",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
   "features": {
-    "ghcr.io/gildraen/dx/dx:1.2.0": {}
+    "ghcr.io/gildraen/dx/dx:1.4.0": {}
   },
   "remoteUser": "vscode",
   "customizations": {
