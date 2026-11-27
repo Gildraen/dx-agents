@@ -145,13 +145,13 @@ The repository release baseline is kept in `version.txt` and
 `.release-please-manifest.json`; tests require them to match. The plugin
 manifest's version remains separately managed.
 
-Release Please uses `GITHUB_TOKEN` by default. GitHub does not start workflows
-for pull requests created with that token. Configure a repository secret named
-`RELEASE_PLEASE_TOKEN` with a fine-grained token limited to this repository and
-contents, issues and pull-request write access if the generated release PRs
-must also run the `validate` workflow. Also enable
-the repository setting that allows GitHub Actions to create pull requests; this
-workflow does not approve them.
+Release Please runs through the shared `ci-workflows` workflow and uses the
+repository's installed Gildraen Release Please GitHub App. Configure repository
+variable `RELEASE_PLEASE_APP_CLIENT_ID` and secret
+`RELEASE_PLEASE_APP_PRIVATE_KEY`. The App needs Contents, Issues and Pull
+requests write permissions. Its token allows the generated release PR to run
+the normal validation workflow; no `GITHUB_TOKEN` pull-request creation setting
+or separate `RELEASE_PLEASE_TOKEN` is required.
 
 ## Checks
 

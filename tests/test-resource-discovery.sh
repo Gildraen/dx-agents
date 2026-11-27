@@ -44,9 +44,11 @@ const validationWorkflow = fs.readFileSync('.github/workflows/validate.yml', 'ut
 const releaseJob = validationWorkflow.split('\n  release:\n')[1] ?? '';
 assert.match(releaseJob, /needs: validate/);
 assert.match(releaseJob, /github\.event_name == 'push' && github\.ref == 'refs\/heads\/main'/);
-assert.match(releaseJob, /googleapis\/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7/);
-assert.match(releaseJob, /contents: write[\s\S]*issues: write[\s\S]*pull-requests: write/);
-assert.match(releaseJob, /token: \$\{\{ secrets\.RELEASE_PLEASE_TOKEN \|\| secrets\.GITHUB_TOKEN \}\}/);
+assert.match(releaseJob, /uses: Gildraen\/ci-workflows\/\.github\/workflows\/reusable-release-please\.yml@[0-9a-f]{40} # \d+\.\d+\.\d+/);
+assert.match(releaseJob, /expected-sha: \$\{\{ github\.sha \}\}/);
+assert.match(releaseJob, /app-client-id: \$\{\{ vars\.RELEASE_PLEASE_APP_CLIENT_ID \}\}/);
+assert.match(releaseJob, /app-private-key: \$\{\{ secrets\.RELEASE_PLEASE_APP_PRIVATE_KEY \}\}/);
+assert.doesNotMatch(releaseJob, /googleapis\/release-please-action|RELEASE_PLEASE_TOKEN|secrets\.GITHUB_TOKEN/);
 for (const directory of ['agents', 'instructions', 'skills']) {
   assert.ok(fs.statSync(directory).isDirectory());
 }
